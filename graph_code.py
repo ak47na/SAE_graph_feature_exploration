@@ -147,6 +147,29 @@ def custom_weight(u, v, d):
     # Assuming the weight is cosine similarity, use cosine distance for edge "length"
     return 1 - d['weight']
 
+def average_sum_of_weights(G):
+    total_weight_sum = 0
+    strength = {}
+    num_nodes = G.number_of_nodes()
+    
+    # Iterate through each node to calculate the sum of incident edge weights
+    for node in G.nodes():
+        # Get all edges incident to the node with their data
+        incident_edges = G.edges(node, data=True)
+        node_degree = len(incident_edges)
+        if node_degree == 0:
+            strength[node] = 0
+            continue
+        # Sum the weights of these edges
+        strength[node] = sum(data.get('weight', 0) for _, _, data in incident_edges)
+        # Add to the total sum of weights
+        total_weight_sum += strength[node]
+        strength[node] /= node_degree
+    
+    # Calculate the average sum of weights
+    average_weight_sum = total_weight_sum / num_nodes if num_nodes > 0 else 0
+    return strength, average_weight_sum
+
 class FeatureGraph:
     def __init__(self, n_hidden_ae):
         self.n_hidden_ae = n_hidden_ae
@@ -190,7 +213,6 @@ class FeatureGraph:
         # (batch seq) n_hidden_ae
         acts = autoencoder.get_ae_feature_acts(tokens=tokens,
                                     model=model,
-                                    autoencoder=autoencoder,
                                     reshape_acts=False)
         # get the indices of top k activations for all (batch * seq) tokens
         _, top_k_indices = torch.topk(torch.abs(acts), k, dim=1)
@@ -214,12 +236,15 @@ class FeatureGraph:
                     self.weights[node_j][node_i] += vect_sim[i][j]
     
     @torch.no_grad()
-    def create_edges(self, all_tokens, batch_size, model, autoencoder, k:int = 32, log_cnt=10, 
+    def create_edges(self, all_tokens, batch_size, model, autoencoder, num_batches, k:int = 32, log_cnt=10, 
                     process_incomplete_batch=False):
         num_seqs, seq = all_tokens.shape
         crt_idx = 0
-        num_batches = num_seqs // batch_size
-        for i in tqdm.trange(log_cnt+1):
+        total_num_batches = num_seqs // batch_size
+        if num_batches > total_num_batches:
+            print(f'The dataset only has {total_num_batches} batches')
+            num_batches = total_num_batches
+        for i in tqdm.trange(num_batches):
             self.create_edges_for_batch(tokens=all_tokens[crt_idx:crt_idx+batch_size], 
                                         model=model, 
                                         autoencoder=autoencoder,

@@ -92,8 +92,8 @@ def make_token_df(model, tokens, len_prefix=5, len_suffix=1):
         label=label,
     ))
 
-def interpret_feature_given_tokens(model, encoder, freqs, feature_id, tokens):
-    print(f"Feature {feature_id} freq: {freqs[feature_id].item():.4f}")
+def interpret_feature_given_tokens(model, encoder, feature_id, tokens):
+    #print(f"Feature {feature_id} freq: {freqs[feature_id].item():.4f}")
     # Let's run the model on some text and then use the autoencoder to process the MLP activations
     _, cache = model.run_with_cache(tokens, stop_at_layer=1, names_filter=utils.get_act_name("post", 0))
     mlp_acts = cache[utils.get_act_name("post", 0)]
@@ -104,18 +104,19 @@ def interpret_feature_given_tokens(model, encoder, freqs, feature_id, tokens):
     print("hidden_acts.shape", hidden_acts.shape)
     return tokens, hidden_acts
 
-def get_top_activations_df(feature_id, tokens, hidden_acts):
-    token_df = make_token_df(tokens)
+def get_top_activations_df(model, feature_id, tokens, hidden_acts):
+    token_df = make_token_df(model, tokens)
     token_df["feature"] = utils.to_numpy(hidden_acts[:, feature_id])
     return token_df.sort_values("feature", ascending=False).head(20).style.background_gradient("coolwarm")
 
 def get_logit_effect(model, encoder, feature_id):
     logit_effect = encoder.W_dec[feature_id] @ model.W_out[0] @ model.W_U
-    return create_vocab_df(logit_effect).head(40).style.background_gradient("coolwarm")
+    return create_vocab_df(model, logit_vec=logit_effect).head(40).style.background_gradient("coolwarm")
 
 
-def interpret_feature(all_tokens, feature_id, start_index, end_index):
+def interpret_feature(model, encoder, all_tokens, feature_id, start_index, end_index):
     tokens = all_tokens[start_index:end_index]
-    tokens, hidden_acts = interpret_feature_given_tokens(feature_id=feature_id, tokens=tokens)
-    top_acts_df = get_top_activations_df(feature_id=feature_id , tokens=tokens, hidden_acts=hidden_acts)
+    tokens, hidden_acts = interpret_feature_given_tokens(model=model, encoder=encoder, 
+                                                         feature_id=feature_id, tokens=tokens)
+    top_acts_df = get_top_activations_df(model=model, feature_id=feature_id , tokens=tokens, hidden_acts=hidden_acts)
     return top_acts_df
