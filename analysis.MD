@@ -46,40 +46,40 @@ The distribution of feature frequency and feature degree is bimodal and the Pear
 
 Graph for SAE1:
 
-`Number of nodes: 16384
+`Number of nodes: 16384`
 
-Number of edges: 794239
+`Number of edges: 794239`
 
-Average degree: 96.95
+`Average degree: 96.95`
 
-Density: 0.0059
+`Density: 0.0059`
 
-Number of connected components: 9411
+`Number of connected components: 9411`
 
-Largest component size: 6974
+`Largest component size: 6974`
 
-Unique component sizes {1, 6974}
+`Unique component sizes {1, 6974}`
 
-Average clustering coefficient: 0.1379
-`
+`Average clustering coefficient: 0.1379`
+
 
 Graph for SAE2:
 
-`Number of nodes: 16384
+`Number of nodes: 16384`
 
-Number of edges: 795547
+`Number of edges: 795547`
 
-Average degree: 97.11
+`Average degree: 97.11`
 
-Density: 0.0059
+`Density: 0.0059`
 
-Number of connected components: 9434
+`Number of connected components: 9434`
 
-Largest component size: 6951
+`Largest component size: 6951`
 
-Unique component sizes {1, 6951}
+`Unique component sizes {1, 6951}`
 
-Average clustering coefficient: 0.1373`
+`Average clustering coefficient: 0.1373`
 
 
 #### Usage example
