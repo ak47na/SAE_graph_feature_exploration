@@ -44,12 +44,15 @@ feature discovery?
 representations and "beliefs"? Can one leverage graph traversals to interpret chain of thought traces?
 
 ## References
+[Disentangling Dense Embeddings with Sparse Autoencoders](https://arxiv.org/html/2408.00657v1#S4))
+[Sparse Autoencoder.ipynb](https://colab.research.google.com/drive/1u8larhpxy8w4mMsJiSBddNOzFGj7_RTn?usp=sharing)
+[Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet](https://transformer-circuits.pub/2024/scaling-monosemanticity/)
+
 
 
 ## Interesting resources
-(https://blog.eleuther.ai/autointerp/)
-(https://arxiv.org/html/2403.19647v1)
-(https://www.lesswrong.com/posts/G2oyFQFTE5eGEas6m/interpretability-as-compression-reconsidering-sae)
+[Sparse Feature Circuits: Discovering and Editing Interpretable Causal Graphs in Language Models](https://arxiv.org/html/2403.19647v1)
+[Interpretability as Compression: Reconsidering SAE Explanations of Neural Activations with MDL-SAEs](https://www.lesswrong.com/posts/G2oyFQFTE5eGEas6m/interpretability-as-compression-reconsidering-sae)
 
 ## Notes
 

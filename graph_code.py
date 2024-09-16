@@ -65,10 +65,11 @@ def plot_degree_vs_freq(G, freq):
 def plot_degrees_vs_freqs(G1, G2, freq_1, freq_2):
     degrees_1 = get_degree(G1)
     degrees_2 = get_degree(G2)
-    plt.scatter(freq_1, degrees_1, alpha=.5)
-    plt.scatter(freq_2, degrees_2, alpha=.5)
+    plt.scatter(freq_1, degrees_1, alpha=.5, label='feature in G1')
+    plt.scatter(freq_2, degrees_2, alpha=.5, label='feature in G2')
     plt.xlabel('frequency')
     plt.ylabel('degree')
+    plt.legend()
     plt.show()
 
 def plot_connected_component(G, node, max_nodes=1000):
