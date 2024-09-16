@@ -4,7 +4,7 @@
 
 Following the recent success in scaling SAEs, several works (such as [Open Source Automated Interpretability for Sparse Autoencoder Features](https://blog.eleuther.ai/autointerp/) and [Disentangling Dense Embeddings with Sparse Autoencoders](https://arxiv.org/html/2408.00657v1#S4)) have focused on facilitating or automating feature discovery and evaluation.
 
-Inspired by their findings on the geometric structure of features, and the existance of universal features (i.e. features with similar activation patterns across different SAEs), this project builds a co-activation graph of "dictionary" features and uses its structure to reason about feature groups within and across graphs.
+Inspired by their findings on the geometric structure of features, and the existance of universal features (i.e. features with similar activation patterns across different SAEs), this project builds a co-activation graph and uses its structure to reason about feature groups within and across SAEs.
 
 In particular, questions of interest are:
 1. Is there a principled way of finding features? 
@@ -13,7 +13,7 @@ In particular, questions of interest are:
 
 ## Setup
 
-At a high level, SAEs are used to identify meaningful representations (e.g. monosemantic features) from the activations of a neural network layer. [^1] For a detailed explanation of SAEs, please see ARENA's Transformer Interpretability Chapter, section [1.3.1](https://arena3-chapter1-transformer-interp.streamlit.app/[1.3.1]_Superposition_&_SAEs), or the `analysis.MD` file for the *minimal* background. 
+At a high level, SAEs are used to identify meaningful representations (e.g. monosemantic features) from the activations of a neural network layer.$[^1]$ For a detailed explanation of SAEs, please see ARENA's Transformer Interpretability Chapter, section [1.3.1](https://arena3-chapter1-transformer-interp.streamlit.app/[1.3.1]_Superposition_&_SAEs), or the `analysis.MD` file for the *minimal* background. 
 
 ### Model and Data
 
@@ -53,4 +53,4 @@ representations and "beliefs"? Can one leverage graph traversals to interpret ch
 
 ## Notes
 
-[^1] SAEs are more general, and the encodings/representations are typically extracted from unlabelled data (the neuron activations in this setup)
+$[^1]$ SAEs are more general, and the encodings/representations are typically extracted from unlabelled data (the neuron activations in this setup)
