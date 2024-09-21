@@ -1,44 +1,56 @@
-# SAE Feature Discovery using co-activation graphs
-
+# Analysis of Sparse Autoencoder Features with Co-Activation Graphs
 ## Goal
 
 ## Minimal SAE background and motivation 
 
-Autoencoders are used to extract encodings/representations from unlabelled data.
+Autoencoders are neural network architectures used to learn efficient representations (encodings) of data, typically in an unsupervised manner.
 
 As the goal of Mechanistic Interpretability is to "reverse-engineer" the computations performed by a neural network, having a clean mapping between neurons and human-interpretable concepts would greatly facilitate our understanding of the model's internal processes.
 Yet, as shown by works such as [Toy models of superposition](https://transformer-circuits.pub/2022/toy_model/index.html), [Finding Neurons In A Haystack](https://arxiv.org/pdf/2305.01610), LLMs superimpose neurons in order to represent as many different concepts as useful, resulting in polysemantic neurons.
 
-By mapping the neuron activations to a larger space $\mathbb{R}^d_{ae\_hidden}$, $d_{ae\_hidden} > d_{mlp}$ and encouraging sparsity, the hope is that each dimension in $\mathbb{R}^{d_{ae_hidden}}$ corresponds to human interpretable features. This mapping is formed by training a sparse autoencoder on the regularised reconstruction loss.
+By mapping the neuron activations to a larger space $\mathbb{R}^{d_{\text{ae\_hidden}}}$, $d_{\text{ae\_hidden}} > d_{\text{mlp}}$ and encouraging sparsity, the hope is that each dimension in $\mathbb{R}^{d_{\text{ae\_hidden}}}$ corresponds to human interpretable features. This mapping is achieved by training a sparse autoencoder on the regularized reconstruction loss.
 
 ### Problem Setup
-Let $x \in \mathbb{R}^{d_{mlp}}$ be the MLP activations. 
-Using an encoding matrix $W_{enc} \in \mathbb{R}^{d_{mlp} \times d_{ae\_hidden}}$, the autoencoder maps the neuron activactions $x$ (polysemantic features) into a larger space (ideally corresponding to interpretable monosematic features). 
+Let $x \in \mathbb{R}^{d_{\text{mlp}}}$ be the MLP activations. 
 
-The decoding matrix $W_{dec} \in \mathbb{R}^{d_{ae\_hidden} \times d_{mlp}}$ maps the features back to the MLP space as $\hat{x} \approx x$.
+The autoencoder consists of:
 
-The reconstruction loss (plus an L2 and L1 regularization terms encoruaging sparsity) is used to train the autoencoder.
+- **Encoder**: An encoding matrix $W_{\text{enc}} \in \mathbb{R}^{d_{\text{mlp}} \times d_{\text{ae\_hidden}}}$ that maps the neuron activations $x$ (containing polysemantic features) into a higher-dimensional space:
 
-The typical workflow is to convert the input (text) to tokens, pass them through the transformer, recording the MLP activations for the specified layer.
-The encodings (determined using the autoencoder) of these MLP activations are considered as SAE features and are used for interpetation.
+  $$ z = ReLU((x-b_{\text{dec}}) W_{\text{enc}} + b_{\text{enc}}) $$
+
+- **Decoder**: A decoding matrix $W_{\text{dec}} \in \mathbb{R}^{d_{\text{ae\_hidden}} \times d_{\text{mlp}}}$ that maps the features back to the MLP space:
+
+  $$ \hat{x} = z W_{\text{dec}} + b_{\text{dec}} $$
+
+The autoencoder is trained on the regularized reconstruction loss.
+
+The typical workflow involves:
+
+1. **Data Preparation**: Convert input text to tokens and pass them through the transformer model, recording the MLP activations for a specified layer.
+
+2. **Training the Autoencoder**: Use these activations to train the sparse autoencoder.
+
+3. **Feature Extraction**: The encoded representations $z$ (SAE features) are used for interpretation and analysis.
+
 
 ## Analysis
 
 ### Creating the feature graph
-The graph is defined as follows:
+A co-activations graph is defined as follows:
 
-**Nodes:** the SAE features (i.e. the $d_{ae\_hidden}$ neurons of the SAE encoding layer)
+- **Nodes**: Each node represents an SAE feature (i.e., one of the $d_{\text{ae\_hidden}}$ neurons in the encoding layer of the SAE).
 
-**Edges:** for every token in the training dataset, the top $k$ active SAE features are linked with an edge, with the average (across the tokens in the batch) cosine similarity of their activation as edge weight
+- **Edges**: For every token in the training dataset, we identify the top $k$ most active SAE features (those with the highest activation values). We connect these features with edges, where the edge weight is the average cosine similarity of their activations across all tokens in the batch.
 
-The used graphs are computed over the first 50 training data batches using $k=4$ top most active features.
+In this analysis, the graphs are computed over the first 50 training data batches using $k=4$, i.e., the top 4 most active features.
 
 #### Feature Degree vs Frequency
 ![alt text](degree_dist.png)
 ![alt text](log_deg_dist.png)
 ![alt text](freq_dist.png)
 
-The distribution of feature frequency and feature degree is bimodal and the Pearson correlation between the two distributions is moderate (~0.51). Yet, a non-neglijable number of features have either low degree and high frequency or vice versa.
+The distributions of feature degree and frequency are bimodal. The Pearson correlation coefficient between the two distributions is approximately 0.51, indicating a moderate positive correlation. Notably, there is a non-negligible number of features with either low degree and high frequency or vice versa. Likely, the features with low frequency co-activate with a diverse set of features while features with the converse for high frequency and low degree.
 
 ![alt text](feat_deg_vs_frq.png)
 
