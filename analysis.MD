@@ -1,5 +1,13 @@
 # Analysis of Sparse Autoencoder Features with Co-Activation Graphs
-## Goal
+## Contribution
+
+Inspired by recent sucesses in scaling SAEs and findings on universality and the geometric structure of features, this project builds a co-activation graph and uses its structure to reason about features (and feature groups) within and across SAEs.
+
+This analysis focuses on the questions below. For the broader aims of the project, please see the `README.MD` file:
+
+1. Do autoencoders trained on the same dataset under the same training procedure but different seeds have similar co-activation graph structures?
+2. Can node statistics in one graph facilitate finding nodes corresponding to related features in another?
+3. In what ways does information about one feature assist in the identification of related features?
 
 ## Minimal SAE background and motivation 
 
@@ -45,54 +53,27 @@ A co-activations graph is defined as follows:
 
 In this analysis, the graphs are computed over the first 50 training data batches using $k=4$, i.e., the top 4 most active features.
 
-#### Feature Degree vs Frequency
 ![alt text](degree_dist.png)
 ![alt text](log_deg_dist.png)
 ![alt text](freq_dist.png)
 
-The distributions of feature degree and frequency are bimodal. The Pearson correlation coefficient between the two distributions is approximately 0.51, indicating a moderate positive correlation. Notably, there is a non-negligible number of features with either low degree and high frequency or vice versa. Likely, the features with low frequency co-activate with a diverse set of features while features with the converse for high frequency and low degree.
+#### Feature Degree vs Frequency
+
+The distributions of feature degree and frequency are bimodal. The Pearson correlation coefficient between the two distributions is approximately 0.51, indicating a moderate positive correlation. Notably, there is a non-negligible number of features with either low degree and high frequency or vice versa. Likely, the features with low frequency co-activate with a diverse set of features with the converse hypothesis for high frequency and low degree.
 
 ![alt text](feat_deg_vs_frq.png)
 
 #### Descriptive statistics
 
-Graph for SAE1:
+The following table summarizes key statistics for the co-activation graphs of SAE1 and SAE2:
 
-`Number of nodes: 16384`
-
-`Number of edges: 794239`
-
-`Average degree: 96.95`
-
-`Density: 0.0059`
-
-`Number of connected components: 9411`
-
-`Largest component size: 6974`
-
-`Unique component sizes {1, 6974}`
-
-`Average clustering coefficient: 0.1379`
-
-
-Graph for SAE2:
-
-`Number of nodes: 16384`
-
-`Number of edges: 795547`
-
-`Average degree: 97.11`
-
-`Density: 0.0059`
-
-`Number of connected components: 9434`
-
-`Largest component size: 6951`
-
-`Unique component sizes {1, 6951}`
-
-`Average clustering coefficient: 0.1373`
-
-
-#### Usage example
-
+| Statistic                        | SAE1      | SAE2      |
+|----------------------------------|-----------|-----------|
+| Number of nodes                  | 16,384    | 16,384    |
+| Number of edges                  | 794,239   | 795,547   |
+| Average degree                   | 96.95     | 97.11     |
+| Density                          | 0.0059    | 0.0059    |
+| Number of connected components   | 9,411     | 9,434     |
+| Largest component size           | 6,974     | 6,951     |
+| Unique component sizes           | {1, 6,974}| {1, 6,951}|
+| Average clustering coefficient   | 0.1379    | 0.1373    |
