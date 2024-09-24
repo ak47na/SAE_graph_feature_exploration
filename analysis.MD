@@ -16,18 +16,18 @@ Autoencoders are neural network architectures used to learn efficient representa
 As the goal of Mechanistic Interpretability is to "reverse-engineer" the computations performed by a neural network, having a clean mapping between neurons and human-interpretable concepts would greatly facilitate our understanding of the model's internal processes.
 Yet, as shown by works such as [Toy models of superposition](https://transformer-circuits.pub/2022/toy_model/index.html), [Finding Neurons In A Haystack](https://arxiv.org/pdf/2305.01610), LLMs superimpose neurons in order to represent as many different concepts as useful, resulting in polysemantic neurons.
 
-By mapping the neuron activations to a larger space $\mathbb{R}^{d_{\text{ae\_hidden}}}$, $d_{\text{ae\_hidden}} > d_{\text{mlp}}$ and encouraging sparsity, the hope is that each dimension in $\mathbb{R}^{d_{\text{ae\_hidden}}}$ corresponds to human interpretable features. This mapping is achieved by training a sparse autoencoder on the regularized reconstruction loss.
+By mapping the neuron activations to a larger space $\mathbb{R}^{d_{hidden}}$, $d_{hidden} > d_{mlp}$ and encouraging sparsity, the hope is that each dimension in $\mathbb{R}^{d_{hidden}}$ corresponds to human interpretable features. This mapping is achieved by training a sparse autoencoder on the regularized reconstruction loss.
 
 ### Problem Setup
-Let $x \in \mathbb{R}^{d_{\text{mlp}}}$ be the MLP activations. 
+Let $x \in \mathbb{R}^{d_{mlp}}$ be the MLP activations. 
 
 The autoencoder consists of:
 
-- **Encoder**: An encoding matrix $W_{\text{enc}} \in \mathbb{R}^{d_{\text{mlp}} \times d_{\text{ae\_hidden}}}$ that maps the neuron activations $x$ (containing polysemantic features) into a higher-dimensional space:
+- **Encoder**: An encoding matrix $$W_{enc} \in \mathbb{R}^{d_{mlp} \times d_{hidden}}$$ that maps the neuron activations $x$ (containing polysemantic features) into a higher-dimensional space:
 
- $$ z = ReLU((x-b_{\text{dec}}) W_{\text{enc}} + b_{\text{enc}}) $$
+ $$ z = ReLU((x-b_{\text{dec}}) W_{enc} + b_{\text{enc}}) $$
 
-- **Decoder**: A decoding matrix $W_{\text{dec}} \in \mathbb{R}^{d_{\text{ae\_hidden}} \times d_{\text{mlp}}}$ that maps the features back to the MLP space:
+- **Decoder**: A decoding matrix $$W_{\text{dec}} \in \mathbb{R}^{d_{hidden} \times d_{mlp}}$$ that maps the features back to the MLP space:
 
  $$ \hat{x} = z W_{\text{dec}} + b_{\text{dec}} $$
 
@@ -47,7 +47,7 @@ The typical workflow involves:
 ### Creating the feature graph
 A co-activations graph is defined as follows:
 
-- **Nodes**: Each node represents an SAE feature (i.e., one of the $d_{\text{ae\_hidden}}$ neurons in the encoding layer of the SAE).
+- **Nodes**: Each node represents an SAE feature (i.e., one of the $d_{hidden}$ neurons in the encoding layer of the SAE).
 
 - **Edges**: For every token in the training dataset, we identify the top $k$ most active SAE features (those with the highest activation values). We connect these features with edges, where the edge weight is the average cosine similarity of their activations across all tokens in the batch.
 
