@@ -1,7 +1,7 @@
 # Analysis of Sparse Autoencoder Features with Co-Activation Graphs
 ## Contribution
 
-Inspired by recent sucesses in scaling SAEs and findings on universality and the geometric structure of features, this project builds a co-activation graph and uses its structure to reason about features (and feature groups) within and across SAEs.
+Inspired by recent successes in scaling SAEs and findings on universality and the geometric structure of features, this project builds a co-activation graph and uses its structure to reason about features (and feature groups) within and across SAEs.
 
 This analysis focuses on the questions below. For the broader aims of the project, please see the `README.MD` file:
 
@@ -25,11 +25,11 @@ The autoencoder consists of:
 
 - **Encoder**: An encoding matrix $W_{\text{enc}} \in \mathbb{R}^{d_{\text{mlp}} \times d_{\text{ae\_hidden}}}$ that maps the neuron activations $x$ (containing polysemantic features) into a higher-dimensional space:
 
-  $$ z = ReLU((x-b_{\text{dec}}) W_{\text{enc}} + b_{\text{enc}}) $$
+ $$ z = ReLU((x-b_{\text{dec}}) W_{\text{enc}} + b_{\text{enc}}) $$
 
 - **Decoder**: A decoding matrix $W_{\text{dec}} \in \mathbb{R}^{d_{\text{ae\_hidden}} \times d_{\text{mlp}}}$ that maps the features back to the MLP space:
 
-  $$ \hat{x} = z W_{\text{dec}} + b_{\text{dec}} $$
+ $$ \hat{x} = z W_{\text{dec}} + b_{\text{dec}} $$
 
 The autoencoder is trained on the regularized reconstruction loss.
 
@@ -67,13 +67,13 @@ The distributions of feature degree and frequency are bimodal. The Pearson corre
 
 The following table summarizes key statistics for the co-activation graphs of SAE1 and SAE2:
 
-| Statistic                        | SAE1      | SAE2      |
+| Statistic                        | SAE1      | SAE2      |
 |----------------------------------|-----------|-----------|
-| Number of nodes                  | 16,384    | 16,384    |
-| Number of edges                  | 794,239   | 795,547   |
-| Average degree                   | 96.95     | 97.11     |
-| Density                          | 0.0059    | 0.0059    |
-| Number of connected components   | 9,411     | 9,434     |
-| Largest component size           | 6,974     | 6,951     |
-| Unique component sizes           | {1, 6,974}| {1, 6,951}|
-| Average clustering coefficient   | 0.1379    | 0.1373    |
+| Number of nodes                  | 16,384    | 16,384    |
+| Number of edges                  | 794,239   | 795,547   |
+| Average degree                   | 96.95     | 97.11     |
+| Density                          | 0.0059    | 0.0059    |
+| Number of connected components   | 9,411     | 9,434     |
+| Largest component size           | 6,974     | 6,951     |
+| Unique component sizes           | {1, 6,974}| {1, 6,951}|
+| Average clustering coefficient   | 0.1379    | 0.1373    |

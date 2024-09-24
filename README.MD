@@ -33,7 +33,7 @@ The trained SAEs are taken from the HuggingFace repository [NeelNanda/sparse_aut
 
 ## Results
 
-For the methodology of creating the co-activation graphs and additional results, please see `analysis.MD` or `SAE_feature_graph_analysis.ipynb` for reproducing the experiments.
+For the methodology of creating the co-activation graphs and additional results, please see `analysis.MD` or [SAE_feature_graph_analysis.ipynb](https://colab.research.google.com/drive/179qyYWTKnPqbNmX-WAqyujwW7TQkaZN1) for reproducing the experiments.
 
 The graph structure (degree and strength distribution) for SAEs of the same model trained with different seeds is very similar. In particular, the Jensen-Shannon divergence between the degree distributions of the two graphs (G1, G2) is 0.15 (a random baseline with the same number of nodes and edges gives a divergence of ~.73)
 
@@ -41,7 +41,7 @@ The graph structure (degree and strength distribution) for SAEs of the same mode
 
 A naive search based on the graph structure allows finding nodes in G2 that are similar to a node in G1, with the similarity carrying over to the "SAE feature space". For example, one of the top similar nodes in G2 to node #16124 in G1 (which, as a feature, activates highly on tokens such as "un", "iversity", "rule" and boosts logits such as "student", "college") is #6741 (which activates highly on tokens such as "Clear", "information", "universal" and boosts logits such as "correctly", "contents"). 
 
-While these results support the first two research questions, future work is required to make the analysis more robust.
+While these results support the first two research questions, future work is required to make the analysis more robust. In particular, I expect the similarity between graphs structure to depend on the training datasets.
 
 
 ## Future work
@@ -63,6 +63,8 @@ While these results support the first two research questions, future work is req
 [Sparse Feature Circuits: Discovering and Editing Interpretable Causal Graphs in Language Models](https://arxiv.org/html/2403.19647v1)
 
 [Interpretability as Compression: Reconsidering SAE Explanations of Neural Activations with MDL-SAEs](https://www.lesswrong.com/posts/G2oyFQFTE5eGEas6m/interpretability-as-compression-reconsidering-sae)
+
+[Gemma Scope: Open Sparse Autoencoders Everywhere All At Once on Gemma 2](https://arxiv.org/abs/2408.05147)
 
 ## Notes
 
